@@ -75,6 +75,4 @@ for i in data:
         print "[!] 对〔"+i['bprm']+"〕老师评教失败！"
 print '[+] 共评价'+str(len(data))+'位老师，感谢使用！'
 print '\n\nPowered by xiaohan HOME <http://yunbo.li>\n\n'
-final = raw_input('按任意键退出...'
-
-
+final = raw_input('按任意键退出...')
