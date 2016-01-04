@@ -1,11 +1,5 @@
-#文件说明
+#说明
 
-+ pingjiao.js —— JavaScript版
-+ pingjiao.py —— Python版
-+ pingjiao_win.py —— Py4win版
-+ setup.py —— py2exe的配置文件
-+ Py4win.zip —— 打包好的exe文件
+两年前写的Python版移到了`old_version`文件夹。现在看着两年前写的代码感觉真是幼稚啊，所以作为javascript小白的我又拿js重写了。现在的版本使用“点击书签注入”方式，用起来应该比以前方便多了吧。
 
-#使用说明
-
-请移步我的博客<http://yunbo.li/post/bupt-pingjiao>
+具体的使用说明请见[这里](http://hansnow.github.io/pingjiao)

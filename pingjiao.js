@@ -1,48 +1,52 @@
-if (window.document.title == "URP 综合教务系统 - 教学评估 - 教学评估") {
-    x = window.frames[1].frames[2].document.getElementsByTagName("input");
-}else if (window.document.title == "问卷评估页面"){
-    x = window.document.getElementsByTagName("input");
+var comment = '%BD%B2%BF%CE%C8%CF%D5%E6';
+var task_array = new Array();
+var el_array = window.frames['bottomFrame'].frames['mainFrame'].document.querySelectorAll('[title=����]');
+// var info_table = document.querySelectorAll('[title=����]')[0].getAttribute('name');
+// console.log(window.frames['bottomFrame'].frames['mainFrame'].document.documentElement.innerHTML);
+for (var i = el_array.length - 1; i >= 0; i--) {
+    info = el_array[i].getAttribute('name').split('#@');
+    var task = {
+        wjbm: info[0],
+        bpr: info[1],
+        pgnr: info[5],
+        wjmc: info[3],
+        bprm: info[2],
+        pgnrm: info[4]
+    };
+    task_array.push(task);
+};
+
+var xmlhttp;
+var task;
+var stop = task_array.length * 2;
+if( window.XMLHttpRequest ){
+    xmlhttp = new XMLHttpRequest();
 }else{
-    alert("请确认一个你现在是不是处于正确的页面上，本程序只能在教学评估页面运行！")
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 }
-data = new Array();
-for(var i=0;i<x.length;i++){if(x[i].type=="hidden"){data.push(x[i].value)}};
-function post(path, params, method) {
-method = method || "post"; // Set method to post by default if not specified.
+xmlhttp.onreadystatechange = function(){
+    if( xmlhttp.readyState == 4 && xmlhttp.status == 200 ){
+        if( stop !== 0 ){
+            if ( stop%2 === 0 ){
+                //Ԥ��post
+                task = task_array.pop()
+                xmlhttp.open("POST","jxpgXsAction.do",true);
+                xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xmlhttp.send("wjbm="+ task.wjbm +"&bpr="+ task.bpr +"&pgnr="+ task.pgnr +"&oper=wjShow&wjmc="+ task.wjmc +"&bprm="+ task.bprm +"&pgnrm="+ task.pgnrm +"&pageSize=20&page=1&currentPage=1&pageNo=");
 
-// The rest of this code assumes you are not using a library.
-// It can be made less wordy if you use one.
-var form = document.createElement("form");
-form.setAttribute("method", method);
-form.setAttribute("action", path);
+            }else{
+                //����post
+                xmlhttp.open("POST","jxpgXsAction.do?oper=wjpg",true);
+                xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xmlhttp.send("wjbm="+ task.wjbm +"&bpr="+ task.bpr +"&pgnr="+ task.pgnr +"&0000000021=10_0.95&0000000022=10_0.95&0000000023=5_0.95&0000000024=20_0.95&0000000025=10_0.95&0000000026=5_0.95&0000000027=5_0.95&0000000028=20_0.95&0000000029=10_0.95&0000000030=5_0.95&zgpj="+comment);
 
-for(var key in params) {
-    if(params.hasOwnProperty(key)) {
-        var hiddenField = document.createElement("input");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", key);
-        hiddenField.setAttribute("value", params[key]);
-
-        form.appendChild(hiddenField);
-     }
+            }
+            stop--;
+        }else{
+            alert('�����');
+        }
+    }
 }
 
-document.body.appendChild(form);
-form.submit();
-}
-post('http://10.3.240.72/jxpgXsAction.do?oper=wjpg', {
-    'wjbm':data[0],
-    'bpr':data[1],
-    'pgnr':data[2],
-    '0000000021':'10_0.95',
-    '0000000022':'10_0.95',
-    '0000000023':'5_0.95',
-    '0000000024':'20_0.95',
-    '0000000025':'10_0.95',
-    '0000000026':'5_0.95',
-    '0000000027':'5_0.95',
-    '0000000028':'20_0.95',
-    '0000000029':'10_0.95',
-    '0000000030':'5_0.95',
-    'zgpj':'老师讲课很认真的啦~'
-},"post");
+xmlhttp.open("GET","jxpgXsAction.do?oper=listWj",true);
+xmlhttp.send();
